@@ -30,6 +30,9 @@ public class UserDaoHibernateImpl implements UserDao {
              System.out.println("Table Created Successfully");
         } catch (Exception e) {
             e.printStackTrace();
+            if (transaction != null) {
+                transaction.rollback();
+            }
         }
     }
 
@@ -45,6 +48,9 @@ public class UserDaoHibernateImpl implements UserDao {
             System.out.println("Table Deleted Successfully");
         } catch (Exception e) {
             e.printStackTrace();
+            if (transaction != null) {
+                transaction.rollback();
+            }
         }
     }
 
@@ -60,6 +66,9 @@ public class UserDaoHibernateImpl implements UserDao {
             System.out.println("Information Added Successfully");
         } catch (Exception e) {
             e.printStackTrace();
+            if (transaction != null) {
+                transaction.rollback();
+            }
         }
     }
 
@@ -75,18 +84,18 @@ public class UserDaoHibernateImpl implements UserDao {
             System.out.println("Information Deleted Successfully");
         } catch (Exception e) {
             e.printStackTrace();
+            if (transaction != null) {
+                transaction.rollback();
+            }
         }
     }
 
     @Override
     public List<User> getAllUsers() {
         List<User> list = new ArrayList<>();
-        Transaction transaction = null;
         try ( Session session = Util.getConnectionHibernate().openSession())
         {
-            transaction = session.beginTransaction();
             list = session.createQuery("From User").list();
-            transaction.commit();
             session.close();
             System.out.println("Information Added To List Successfully");
         } catch (Exception e) {
@@ -110,6 +119,9 @@ public class UserDaoHibernateImpl implements UserDao {
             System.out.println("Data Deleted Successfully");
         } catch (Exception e) {
             e.printStackTrace();
+            if (transaction != null) {
+                transaction.rollback();
+            }
         }
     }
 }
